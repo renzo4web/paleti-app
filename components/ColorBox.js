@@ -2,12 +2,15 @@ import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 
-const ColorBox = ({ item, index }) => {
+const ColorBox = ({ item }) => {
   const { colorName, hexCode } = item;
 
   const copyToClipboard = () => {
     Clipboard.setString(hexCode);
-    Alert.alert('Text to clipboard', hexCode);
+    Alert.alert(
+      'Text to clipboard',
+      `${colorName} : ${hexCode} copied to clipboard`,
+    );
   };
 
   return (

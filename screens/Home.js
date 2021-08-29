@@ -7,11 +7,14 @@ import {
   View,
 } from 'react-native';
 import PreviewColors from '../components/PreviewColors';
+import { useThemeContext } from '../context/ThemeContext';
 
 const Home = ({ navigation, route }) => {
   const { paletteName, selectedColors } = route.params;
   const [palettes, setPalettes] = useState([]);
   const [isRefresing, setIsRefresing] = useState(false);
+  const { theme, setTheme } = useThemeContext();
+  console.log(theme);
 
   useEffect(() => {
     let current = true;
@@ -44,7 +47,30 @@ const Home = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: theme === 'light' ? '#000' : '#fff' },
+      ]}
+    >
+      <TouchableOpacity
+        onPress={() =>
+          setTheme((currTheme) => (currTheme === 'light' ? 'dark' : 'light'))
+        }
+        style={[
+          styles.modalBtn,
+          { backgroundColor: theme === 'light' ? '#000' : '#fff' },
+        ]}
+      >
+        <Text
+          style={[
+            styles.textList,
+            { color: theme === 'light' ? '#fff' : '#000' },
+          ]}
+        >
+          Change theme
+        </Text>
+      </TouchableOpacity>
       <FlatList
         style={styles.rowList}
         data={palettes}
@@ -57,6 +83,7 @@ const Home = ({ navigation, route }) => {
                 colors: item.colors,
               })
             }
+            style={{ flex: 1 }}
           >
             <View style={styles.containerPreview}>
               <Text style={styles.textList}>{item.paletteName}</Text>
@@ -68,6 +95,7 @@ const Home = ({ navigation, route }) => {
         onRefresh={handlePull}
         ListHeaderComponent={
           <TouchableOpacity
+            style={styles.btnAddColor}
             onPress={() => navigation.navigate('ColorPaletteModal')}
           >
             <Text style={styles.modalBtn}>Add a color scheme</Text>
@@ -83,28 +111,35 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingTop: 10,
     flex: 1,
-    backgroundColor: 'white',
   },
   rowList: {
     flex: 1,
   },
 
   containerPreview: {
-    marginVertical: 10,
+    marginVertical: 20,
+    flex: 1,
   },
 
   textList: {
     fontWeight: 'bold',
     marginBottom: 5,
     color: '#000000',
+    textAlign: 'center',
+    fontSize: 20,
   },
 
   modalBtn: {
     fontSize: 20,
-    color: 'teal',
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 10,
+  },
+
+  btnAddColor: {
+    backgroundColor: '#fda866',
+    borderRadius: 9,
   },
 });
 
