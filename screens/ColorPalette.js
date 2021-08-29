@@ -1,17 +1,23 @@
 import React from 'react';
 import { Text, FlatList, StyleSheet, View } from 'react-native';
 import ColorBox from '../components/ColorBox';
+import { useThemeContext } from '../context/ThemeContext';
 
 const ColorPalette = ({ route }) => {
+  const {
+    theme: [themeBg, themeText],
+  } = useThemeContext();
   const { paletteName, colors } = route.params;
   return (
-    <View style={styles.safeArea}>
+    <View style={[styles.safeArea, { backgroundColor: themeBg }]}>
       <FlatList
         data={colors}
         renderItem={ColorBox}
         keyExtractor={({ hexCode }) => hexCode}
         ListHeaderComponent={
-          <Text style={styles.textBold}>Name: {paletteName}</Text>
+          <Text style={[styles.textBold, { color: themeText }]}>
+            {paletteName}
+          </Text>
         }
       />
     </View>
@@ -23,7 +29,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     paddingHorizontal: 10,
-    backgroundColor: "white",
   },
 
   container: {
@@ -40,7 +45,9 @@ const styles = StyleSheet.create({
   },
 
   textBold: {
+    fontSize: 25,
     fontWeight: 'bold',
+    marginBottom: 10,
   },
 
   cyan: {

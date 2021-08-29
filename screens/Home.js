@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
 import PreviewColors from '../components/PreviewColors';
 import { useThemeContext } from '../context/ThemeContext';
 
@@ -13,8 +14,10 @@ const Home = ({ navigation, route }) => {
   const { paletteName, selectedColors } = route.params;
   const [palettes, setPalettes] = useState([]);
   const [isRefresing, setIsRefresing] = useState(false);
-  const { theme, setTheme } = useThemeContext();
-  console.log(theme);
+  const {
+    theme: [themeBg, themeText],
+    setTheme,
+  } = useThemeContext();
 
   useEffect(() => {
     let current = true;
@@ -22,7 +25,6 @@ const Home = ({ navigation, route }) => {
       .then((res) => res.json())
       .then((data) => {
         if (current) {
-          console.log('DATA FETCHED');
           setPalettes(data);
           setIsRefresing(false);
         }
@@ -47,27 +49,18 @@ const Home = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: theme === 'light' ? '#000' : '#fff' },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: themeBg }]}>
       <TouchableOpacity
         onPress={() =>
           setTheme((currTheme) => (currTheme === 'light' ? 'dark' : 'light'))
         }
         style={[
           styles.modalBtn,
-          { backgroundColor: theme === 'light' ? '#000' : '#fff' },
+          styles.btnAddColor,
+          { backgroundColor: themeBg, borderColor: themeText, borderWidth: 1 },
         ]}
       >
-        <Text
-          style={[
-            styles.textList,
-            { color: theme === 'light' ? '#fff' : '#000' },
-          ]}
-        >
+        <Text style={[styles.textList, { color: themeText }]}>
           Change theme
         </Text>
       </TouchableOpacity>
@@ -86,7 +79,9 @@ const Home = ({ navigation, route }) => {
             style={{ flex: 1 }}
           >
             <View style={styles.containerPreview}>
-              <Text style={styles.textList}>{item.paletteName}</Text>
+              <Text style={[styles.textList, { color: themeText }]}>
+                {item.paletteName}
+              </Text>
               <PreviewColors data={item} />
             </View>
           </TouchableOpacity>

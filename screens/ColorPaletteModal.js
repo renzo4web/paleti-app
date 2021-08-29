@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useThemeContext } from '../context/ThemeContext';
 import { getTextColor } from '../utils/getTextColor';
 
 const COLORS = [
@@ -162,6 +163,9 @@ const COLORS = [
 ];
 
 const ColorPaletteModal = ({ navigation }) => {
+  const {
+    theme: [themeBg, themeText],
+  } = useThemeContext();
   const [paletteName, setPaletteName] = useState('');
   const [selectedColors, setSelectedColors] = useState([]);
 
@@ -201,19 +205,22 @@ const ColorPaletteModal = ({ navigation }) => {
 
   const handleSubmit = useCallback(() => {
     if (isValid()) {
-      console.log(paletteName, selectedColors);
       navigation.navigate('Home', {
         paletteName,
         selectedColors,
       });
     }
-  }, [paletteName, selectedColors, isValid]);
+  }, [paletteName, selectedColors, isValid, navigation]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Name of your color Palette</Text>
+    <View
+      style={[styles.container, { backgroundColor: themeBg, color: themeText }]}
+    >
+      <Text style={[styles.label, { color: themeText }]}>
+        Name of your color Palette
+      </Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: themeText, borderColor: themeText }]}
         value={paletteName}
         onChangeText={setPaletteName}
       />
@@ -298,9 +305,9 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    height: 40,
+    fontSize: 20,
     marginVertical: 15,
-    padding: 5,
+    padding: 10,
     borderWidth: 1,
     borderRadius: 5,
   },
