@@ -9,7 +9,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <ThemeContext>
-        {/* // TODO move navigator to a separate compnent */}
         <AppRouter />
       </ThemeContext>
     </NavigationContainer>

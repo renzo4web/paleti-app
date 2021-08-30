@@ -1,23 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
+import PalettePreview from '../components/PalettePreview';
 
-import PreviewColors from '../components/PreviewColors';
+import ToggleTheme from '../components/ToggleTheme';
+import TouchAddScheme from '../components/TouchAddScheme';
 import { useThemeContext } from '../context/ThemeContext';
 
 const Home = ({ navigation, route }) => {
-  const { paletteName, selectedColors } = route.params;
-  const [palettes, setPalettes] = useState([]);
-  const [isRefresing, setIsRefresing] = useState(false);
   const {
     theme: [themeBg, themeText],
     setTheme,
   } = useThemeContext();
+
+  const { paletteName, selectedColors } = route.params;
+  const [palettes, setPalettes] = useState([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     let current = true;
@@ -26,12 +23,12 @@ const Home = ({ navigation, route }) => {
       .then((data) => {
         if (current) {
           setPalettes(data);
-          setIsRefresing(false);
+          setIsRefreshing(false);
         }
       });
 
     return () => (current = false);
-  }, [setPalettes, isRefresing]);
+  }, [setPalettes, isRefreshing]);
 
   useEffect(() => {
     setPalettes((currentPalettes) => [
@@ -45,56 +42,26 @@ const Home = ({ navigation, route }) => {
   }, [paletteName, selectedColors]);
 
   const handlePull = useCallback(() => {
-    setIsRefresing(true);
+    setIsRefreshing(true);
   }, []);
 
   return (
     <View style={[styles.container, { backgroundColor: themeBg }]}>
-      <TouchableOpacity
-        onPress={() =>
-          setTheme((currTheme) => (currTheme === 'light' ? 'dark' : 'light'))
-        }
-        style={[
-          styles.modalBtn,
-          styles.btnAddColor,
-          { backgroundColor: themeBg, borderColor: themeText, borderWidth: 1 },
-        ]}
-      >
-        <Text style={[styles.textList, { color: themeText }]}>
-          Change theme
-        </Text>
-      </TouchableOpacity>
+      <ToggleTheme />
+
       <FlatList
         style={styles.rowList}
         data={palettes}
         keyExtractor={(item) => item.id + item.paletteName}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('ColorPalette', {
-                paletteName: item.paletteName,
-                colors: item.colors,
-              })
-            }
-            style={{ flex: 1 }}
-          >
-            <View style={styles.containerPreview}>
-              <Text style={[styles.textList, { color: themeText }]}>
-                {item.paletteName}
-              </Text>
-              <PreviewColors data={item} />
-            </View>
-          </TouchableOpacity>
+          <PalettePreview item={item} navigation={navigation} />
         )}
-        refreshing={isRefresing}
+        refreshing={isRefreshing}
         onRefresh={handlePull}
         ListHeaderComponent={
-          <TouchableOpacity
-            style={styles.btnAddColor}
-            onPress={() => navigation.navigate('ColorPaletteModal')}
-          >
-            <Text style={styles.modalBtn}>Add a color scheme</Text>
-          </TouchableOpacity>
+          <TouchAddScheme
+            handlePress={() => navigation.navigate('ColorPaletteModal')}
+          />
         }
       />
     </View>
@@ -109,32 +76,6 @@ const styles = StyleSheet.create({
   },
   rowList: {
     flex: 1,
-  },
-
-  containerPreview: {
-    marginVertical: 20,
-    flex: 1,
-  },
-
-  textList: {
-    fontWeight: 'bold',
-    marginBottom: 5,
-    color: '#000000',
-    textAlign: 'center',
-    fontSize: 20,
-  },
-
-  modalBtn: {
-    fontSize: 20,
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 10,
-  },
-
-  btnAddColor: {
-    backgroundColor: '#fda866',
-    borderRadius: 9,
   },
 });
 
