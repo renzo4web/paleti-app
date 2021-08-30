@@ -11,7 +11,9 @@ const ThemeContext = ({ children }) => {
   const themeText = theme === 'dark' ? '#000' : '#ffff';
 
   return (
-    <Context.Provider value={{ theme: [themeBg, themeText], setTheme }}>
+    <Context.Provider
+      value={{ theme: [themeBg, themeText], setTheme, isTheme: theme }}
+    >
       <View style={{ backgroundColor: '#000', flex: 1 }}>{children}</View>
     </Context.Provider>
   );

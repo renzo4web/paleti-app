@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
 import PalettePreview from '../components/PalettePreview';
 
 import ToggleTheme from '../components/ToggleTheme';
@@ -46,9 +46,14 @@ const Home = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View style={[styles.container, { backgroundColor: themeBg }]}>
-      <ToggleTheme />
-
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: themeBg,
+        },
+      ]}
+    >
       <FlatList
         style={styles.rowList}
         data={palettes}
@@ -59,9 +64,12 @@ const Home = ({ navigation, route }) => {
         refreshing={isRefreshing}
         onRefresh={handlePull}
         ListHeaderComponent={
-          <TouchAddScheme
-            handlePress={() => navigation.navigate('ColorPaletteModal')}
-          />
+          <View style={styles.headerStyle}>
+            <ToggleTheme />
+            <TouchAddScheme
+              handlePress={() => navigation.navigate('ColorPaletteModal')}
+            />
+          </View>
         }
       />
     </View>
@@ -73,6 +81,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     paddingTop: 10,
     flex: 1,
+  },
+
+  headerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 4,
   },
   rowList: {
     flex: 1,

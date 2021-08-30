@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   label: {
-    fontWeight: 'bold',
+    fontFamily: 'Poppins_500Medium',
   },
 
   containerSwitch: {

@@ -1,3 +1,4 @@
+import { useFonts, Poppins_500Medium } from '@expo-google-fonts/poppins';
 import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { useThemeContext } from '../context/ThemeContext';
@@ -19,7 +20,15 @@ const PalettePreview = ({ item, navigation }) => {
       style={styles.container}
     >
       <View style={styles.containerPreview}>
-        <Text style={[styles.textList, { color: themeText }]}>
+        <Text
+          style={[
+            styles.textList,
+            {
+              color: themeText,
+              fontFamily: 'Poppins_500Medium',
+            },
+          ]}
+        >
           {item.paletteName}
         </Text>
         <PreviewColors data={item} />
@@ -42,9 +51,8 @@ const styles = StyleSheet.create({
   },
 
   textList: {
-    fontWeight: 'bold',
     marginBottom: 5,
-    textAlign: 'center',
+    textAlign: 'left',
     fontSize: 20,
   },
 

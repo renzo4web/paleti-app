@@ -15,7 +15,14 @@ const ColorPalette = ({ route }) => {
         renderItem={ColorBox}
         keyExtractor={({ hexCode }) => hexCode}
         ListHeaderComponent={
-          <Text style={[styles.textBold, { color: themeText }]}>
+          <Text
+            style={[
+              styles.textBold,
+              {
+                color: themeText,
+              },
+            ]}
+          >
             {paletteName}
           </Text>
         }
@@ -46,8 +53,8 @@ const styles = StyleSheet.create({
 
   textBold: {
     fontSize: 25,
-    fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: 'Poppins_500Medium',
   },
 
   cyan: {

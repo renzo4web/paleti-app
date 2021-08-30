@@ -6,6 +6,7 @@ const ToggleTheme = () => {
   const {
     theme: [themeBg, themeText],
     setTheme,
+    isTheme,
   } = useThemeContext();
 
   return (
@@ -18,7 +19,9 @@ const ToggleTheme = () => {
         { backgroundColor: themeBg, borderColor: themeText, borderWidth: 1 },
       ]}
     >
-      <Text style={[styles.textList, { color: themeText }]}>Change theme</Text>
+      <Text style={[styles.textList, { color: themeText }]}>
+        {isTheme === 'light' ? '💡' : '🌙'}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -28,7 +31,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     padding: 5,
-    marginBottom: 10,
     borderRadius: 10,
   },
 
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: '#000000',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 30,
   },
 });
 
