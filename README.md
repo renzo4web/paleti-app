@@ -1,0 +1,2 @@
+# paleti-app
+React Native
