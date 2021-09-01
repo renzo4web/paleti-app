@@ -8,7 +8,6 @@ const PalettePreview = ({ item, navigation }) => {
   const {
     theme: [themeBg, themeText],
   } = useThemeContext();
-
   return (
     <TouchableOpacity
       onPress={() =>
@@ -25,7 +24,6 @@ const PalettePreview = ({ item, navigation }) => {
             styles.textList,
             {
               color: themeText,
-              fontFamily: 'Poppins_500Medium',
             },
           ]}
         >

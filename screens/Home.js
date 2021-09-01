@@ -5,6 +5,7 @@ import PalettePreview from '../components/PalettePreview';
 import ToggleTheme from '../components/ToggleTheme';
 import TouchAddScheme from '../components/TouchAddScheme';
 import { useThemeContext } from '../context/ThemeContext';
+import { readFromStorage } from '../utils/readFromStorage';
 
 const Home = ({ navigation, route }) => {
   const {
@@ -22,8 +23,11 @@ const Home = ({ navigation, route }) => {
       .then((res) => res.json())
       .then((data) => {
         if (current) {
-          setPalettes(data);
-          setIsRefreshing(false);
+          readFromStorage().then((storage) => {
+            console.log({ storage, data });
+            setPalettes([...data, ...storage]);
+            setIsRefreshing(false);
+          });
         }
       });
 

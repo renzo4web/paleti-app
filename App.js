@@ -5,7 +5,17 @@ import { StyleSheet } from 'react-native';
 import ThemeContext from './context/ThemeContext';
 import AppRouter from './router/AppRouter';
 
+import { useFonts, Poppins_400Regular } from '@expo-google-fonts/poppins';
+import { Text } from 'react-native';
 export default function App() {
+  const [isFontLoad] = useFonts({
+    Poppins_400Regular,
+  });
+
+  if (!isFontLoad) {
+    return <Text>LOADING</Text>;
+  }
+
   return (
     <NavigationContainer>
       <ThemeContext>

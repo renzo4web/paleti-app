@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Alert,
   FlatList,
@@ -11,6 +12,7 @@ import {
 } from 'react-native';
 import { useThemeContext } from '../context/ThemeContext';
 import { getTextColor } from '../utils/getTextColor';
+import { saveToStorage } from '../utils/saveToStorage';
 
 const COLORS = [
   { colorName: 'AliceBlue', hexCode: '#F0F8FF' },
@@ -209,6 +211,8 @@ const ColorPaletteModal = ({ navigation }) => {
         paletteName,
         selectedColors,
       });
+
+      saveToStorage({ paletteName, selectedColors });
     }
   }, [paletteName, selectedColors, isValid, navigation]);
 
@@ -273,9 +277,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 20,
   },
-  label: {
-    fontFamily: 'Poppins_500Medium',
-  },
+  label: {},
 
   containerSwitch: {
     flex: 1,
