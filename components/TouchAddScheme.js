@@ -1,13 +1,10 @@
 import React from 'react';
-import { Poppins_700Bold, useFonts } from '@expo-google-fonts/poppins';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const TouchAddScheme = ({ handlePress }) => {
   return (
     <TouchableOpacity style={styles.btnAddColor} onPress={handlePress}>
-      <Text style={[styles.modalBtn, { fontFamily: 'Poppins_700Bold' }]}>
-        Add a color scheme
-      </Text>
+      <Text style={[styles.modalBtn]}>Add a color scheme</Text>
     </TouchableOpacity>
   );
 };

@@ -1,4 +1,3 @@
-import { useFonts, Poppins_500Medium } from '@expo-google-fonts/poppins';
 import React from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { useThemeContext } from '../context/ThemeContext';

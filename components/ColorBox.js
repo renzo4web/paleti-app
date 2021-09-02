@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
   },
 
   textBold: {
+    fontSize: 25,
     fontWeight: 'bold',
   },
 });

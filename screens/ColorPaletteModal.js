@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Alert,
   FlatList,
@@ -207,12 +206,17 @@ const ColorPaletteModal = ({ navigation }) => {
 
   const handleSubmit = useCallback(() => {
     if (isValid()) {
-      navigation.navigate('Home', {
+      const newPalette = {
         paletteName,
-        selectedColors,
-      });
+        colors: selectedColors,
+        id: String(new Date().getTime()),
+      };
 
-      saveToStorage({ paletteName, selectedColors });
+      saveToStorage(newPalette).then(() => {
+        navigation.navigate('Home', {
+          newPalette,
+        });
+      });
     }
   }, [paletteName, selectedColors, isValid, navigation]);
 

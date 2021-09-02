@@ -23,11 +23,7 @@ const AppRouter = () => {
       }}
     >
       <RootStack.Group>
-        <RootStack.Screen
-          name="Home"
-          component={Home}
-          initialParams={{ paletteName: '', selectedColors: [] }}
-        />
+        <RootStack.Screen name="Home" component={Home} />
         <RootStack.Screen
           options={({ route }) => ({ title: route.params.paletteName })}
           name="ColorPalette"

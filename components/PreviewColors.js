@@ -3,6 +3,7 @@ import { FlatList, View, StyleSheet } from 'react-native';
 
 const PreviewColors = ({ data, size = 40 }) => {
   const { colors, index } = data;
+  console.log(colors);
   return (
     <View
       style={{
@@ -10,7 +11,7 @@ const PreviewColors = ({ data, size = 40 }) => {
       }}
     >
       <FlatList
-        data={colors.slice(0, 5)}
+        data={colors.length > 5 ? colors.slice(0, 5) : colors}
         keyExtractor={({ hexCode }) => hexCode}
         key={index}
         contentContainerStyle={{ flex: 1, justifyContent: 'space-between' }}

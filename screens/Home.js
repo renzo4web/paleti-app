@@ -1,21 +1,28 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View, Text } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import PalettePreview from '../components/PalettePreview';
 
 import ToggleTheme from '../components/ToggleTheme';
 import TouchAddScheme from '../components/TouchAddScheme';
 import { useThemeContext } from '../context/ThemeContext';
 import { readFromStorage } from '../utils/readFromStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({ navigation, route }) => {
   const {
     theme: [themeBg, themeText],
-    setTheme,
   } = useThemeContext();
 
-  const { paletteName, selectedColors } = route.params;
   const [palettes, setPalettes] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // TODO : LOAD PALLETS FROM LOCAL STORAGE WHEN HOME
 
   useEffect(() => {
     let current = true;
@@ -24,8 +31,8 @@ const Home = ({ navigation, route }) => {
       .then((data) => {
         if (current) {
           readFromStorage().then((storage) => {
-            console.log({ storage, data });
-            setPalettes([...data, ...storage]);
+            console.log({ storage });
+            setPalettes([...storage, ...data].flat(1));
             setIsRefreshing(false);
           });
         }
@@ -34,16 +41,9 @@ const Home = ({ navigation, route }) => {
     return () => (current = false);
   }, [setPalettes, isRefreshing]);
 
-  useEffect(() => {
-    setPalettes((currentPalettes) => [
-      {
-        id: currentPalettes.length - 1,
-        paletteName,
-        colors: selectedColors,
-      },
-      ...currentPalettes,
-    ]);
-  }, [paletteName, selectedColors]);
+  const handleDeletePalettes = useCallback(async () => {
+    await AsyncStorage.clear();
+  }, []);
 
   const handlePull = useCallback(() => {
     setIsRefreshing(true);
@@ -70,6 +70,12 @@ const Home = ({ navigation, route }) => {
         ListHeaderComponent={
           <View style={styles.headerStyle}>
             <ToggleTheme />
+            <TouchableOpacity
+              style={{ color: themeText }}
+              onPress={handleDeletePalettes}
+            >
+              <Text>DELETE ALL</Text>
+            </TouchableOpacity>
             <TouchAddScheme
               handlePress={() => navigation.navigate('ColorPaletteModal')}
             />
