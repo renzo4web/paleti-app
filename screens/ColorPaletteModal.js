@@ -213,9 +213,7 @@ const ColorPaletteModal = ({ navigation }) => {
       };
 
       saveToStorage(newPalette).then(() => {
-        navigation.navigate('Home', {
-          newPalette,
-        });
+        navigation.navigate('Home', {});
       });
     }
   }, [paletteName, selectedColors, isValid, navigation]);
@@ -232,6 +230,9 @@ const ColorPaletteModal = ({ navigation }) => {
         value={paletteName}
         onChangeText={setPaletteName}
       />
+      <TouchableOpacity style={styles.btnSubmit} onPress={handleSubmit}>
+        <Text style={styles.btnText}>Submit</Text>
+      </TouchableOpacity>
       <FlatList
         data={COLORS}
         style={{ flex: 1 }}
@@ -264,11 +265,6 @@ const ColorPaletteModal = ({ navigation }) => {
             </View>
           );
         }}
-        ListFooterComponent={
-          <TouchableOpacity style={styles.btnSubmit} onPress={handleSubmit}>
-            <Text style={styles.btnText}>Submit</Text>
-          </TouchableOpacity>
-        }
       />
     </View>
   );

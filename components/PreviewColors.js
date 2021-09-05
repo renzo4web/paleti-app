@@ -3,7 +3,6 @@ import { FlatList, View, StyleSheet } from 'react-native';
 
 const PreviewColors = ({ data, size = 40 }) => {
   const { colors, index } = data;
-  console.log(colors);
   return (
     <View
       style={{

@@ -1,13 +1,29 @@
 import React from 'react';
-import { Text, FlatList, StyleSheet, View } from 'react-native';
+import {
+  Text,
+  FlatList,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import ColorBox from '../components/ColorBox';
 import { useThemeContext } from '../context/ThemeContext';
+import { readFromStorage } from '../utils/readFromStorage';
+import { saveToStorage } from '../utils/saveToStorage';
 
 const ColorPalette = ({ route }) => {
   const {
     theme: [themeBg, themeText],
   } = useThemeContext();
-  const { paletteName, colors } = route.params;
+  const { paletteName, colors, id } = route.params;
+
+  const handleDeletePallete = () => {
+    readFromStorage().then((palettes) => {
+      console.log('object');
+      saveToStorage(palettes.filter((pal) => pal.id === id));
+    });
+  };
+
   return (
     <View style={[styles.safeArea, { backgroundColor: themeBg }]}>
       <FlatList
@@ -15,16 +31,35 @@ const ColorPalette = ({ route }) => {
         renderItem={ColorBox}
         keyExtractor={({ hexCode }) => hexCode}
         ListHeaderComponent={
-          <Text
-            style={[
-              styles.textBold,
-              {
-                color: themeText,
-              },
-            ]}
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingVertical: 10,
+            }}
           >
-            {paletteName}
-          </Text>
+            <Text
+              style={[
+                styles.textBold,
+                {
+                  color: themeText,
+                },
+              ]}
+            >
+              {paletteName}
+            </Text>
+            <TouchableOpacity
+              onPress={handleDeletePallete}
+              style={{
+                justifyContent: 'center',
+                borderRadius: 30,
+              }}
+            >
+              <Text style={{ color: themeText, fontSize: 30 }}>🗑️</Text>
+            </TouchableOpacity>
+          </View>
         }
       />
     </View>
@@ -54,7 +89,6 @@ const styles = StyleSheet.create({
   textBold: {
     fontSize: 25,
     marginBottom: 10,
-    fontFamily: 'Poppins_500Medium',
   },
 
   cyan: {

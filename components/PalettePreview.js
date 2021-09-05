@@ -13,6 +13,7 @@ const PalettePreview = ({ item, navigation }) => {
         navigation.navigate('ColorPalette', {
           paletteName: item.paletteName,
           colors: item.colors,
+          id: item.id,
         })
       }
       style={styles.container}

@@ -13,6 +13,7 @@ import TouchAddScheme from '../components/TouchAddScheme';
 import { useThemeContext } from '../context/ThemeContext';
 import { readFromStorage } from '../utils/readFromStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const Home = ({ navigation, route }) => {
   const {
@@ -20,18 +21,18 @@ const Home = ({ navigation, route }) => {
   } = useThemeContext();
 
   const [palettes, setPalettes] = useState([]);
+  const isFocused = useIsFocused();
   const [isRefreshing, setIsRefreshing] = useState(false);
-
-  // TODO : LOAD PALLETS FROM LOCAL STORAGE WHEN HOME
 
   useEffect(() => {
     let current = true;
+
     fetch('https://color-palette-api.kadikraman.vercel.app/palettes')
       .then((res) => res.json())
       .then((data) => {
         if (current) {
           readFromStorage().then((storage) => {
-            console.log({ storage });
+            console.log('Primer UseEffect');
             setPalettes([...storage, ...data].flat(1));
             setIsRefreshing(false);
           });
@@ -39,7 +40,7 @@ const Home = ({ navigation, route }) => {
       });
 
     return () => (current = false);
-  }, [setPalettes, isRefreshing]);
+  }, [setPalettes, isRefreshing, isFocused]);
 
   const handleDeletePalettes = useCallback(async () => {
     await AsyncStorage.clear();
