@@ -10,6 +10,7 @@ import ColorBox from '../components/ColorBox';
 import { useThemeContext } from '../context/ThemeContext';
 import { readFromStorage } from '../utils/readFromStorage';
 import { saveToStorage } from '../utils/saveToStorage';
+import QRCode from 'react-native-qrcode-svg';
 
 const ColorPalette = ({ route }) => {
   const {
@@ -30,6 +31,23 @@ const ColorPalette = ({ route }) => {
         data={colors}
         renderItem={ColorBox}
         keyExtractor={({ hexCode }) => hexCode}
+        ListFooterComponent={
+          <View
+            style={{
+              alignSelf: 'center',
+              marginVertical: 25,
+            }}
+          >
+            <QRCode
+              size={300}
+              backgroundColor={themeBg}
+              color={themeText}
+              value={`Palette Name : ${paletteName} \n
+               Colors : ${JSON.stringify(colors, null, 2)}
+              `}
+            />
+          </View>
+        }
         ListHeaderComponent={
           <View
             style={{
@@ -56,9 +74,7 @@ const ColorPalette = ({ route }) => {
                 justifyContent: 'center',
                 borderRadius: 30,
               }}
-            >
-              <Text style={{ color: themeText, fontSize: 30 }}>🗑️</Text>
-            </TouchableOpacity>
+            />
           </View>
         }
       />

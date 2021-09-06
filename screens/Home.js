@@ -32,7 +32,6 @@ const Home = ({ navigation, route }) => {
       .then((data) => {
         if (current) {
           readFromStorage().then((storage) => {
-            console.log('Primer UseEffect');
             setPalettes([...storage, ...data].flat(1));
             setIsRefreshing(false);
           });
@@ -71,11 +70,8 @@ const Home = ({ navigation, route }) => {
         ListHeaderComponent={
           <View style={styles.headerStyle}>
             <ToggleTheme />
-            <TouchableOpacity
-              style={{ color: themeText }}
-              onPress={handleDeletePalettes}
-            >
-              <Text>DELETE ALL</Text>
+            <TouchableOpacity onPress={handleDeletePalettes}>
+              <Text style={{ color: themeText }}> DELETE ALL</Text>
             </TouchableOpacity>
             <TouchAddScheme
               handlePress={() => navigation.navigate('ColorPaletteModal')}
